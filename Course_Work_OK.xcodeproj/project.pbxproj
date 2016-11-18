@@ -14,6 +14,7 @@
 		0E7365861DDDB374003C8B15 /* GroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7365851DDDB374003C8B15 /* GroupCell.m */; };
 		0E73658D1DDDEF19003C8B15 /* PhotoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E73658C1DDDEF19003C8B15 /* PhotoController.m */; };
 		0E7365941DDDF40E003C8B15 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7365931DDDF40E003C8B15 /* PhotoCell.m */; };
+		0E73659A1DDF0BC5003C8B15 /* PhotoDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7365991DDF0BC5003C8B15 /* PhotoDetailController.m */; };
 		0EA6278B1DD2328800EFD734 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA6278A1DD2328800EFD734 /* main.m */; };
 		0EA6278E1DD2328800EFD734 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA6278D1DD2328800EFD734 /* AppDelegate.m */; };
 		0EA627941DD2328800EFD734 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EA627921DD2328800EFD734 /* Main.storyboard */; };
@@ -38,6 +39,8 @@
 		0E73658C1DDDEF19003C8B15 /* PhotoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoController.m; sourceTree = "<group>"; };
 		0E7365921DDDF40E003C8B15 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
 		0E7365931DDDF40E003C8B15 /* PhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
+		0E7365981DDF0BC5003C8B15 /* PhotoDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDetailController.h; sourceTree = "<group>"; };
+		0E7365991DDF0BC5003C8B15 /* PhotoDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailController.m; sourceTree = "<group>"; };
 		0EA627861DD2328800EFD734 /* Course_Work_OK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Course_Work_OK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EA6278A1DD2328800EFD734 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0EA6278C1DD2328800EFD734 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -106,6 +109,8 @@
 			children = (
 				0E73658B1DDDEF19003C8B15 /* PhotoController.h */,
 				0E73658C1DDDEF19003C8B15 /* PhotoController.m */,
+				0E7365981DDF0BC5003C8B15 /* PhotoDetailController.h */,
+				0E7365991DDF0BC5003C8B15 /* PhotoDetailController.m */,
 				0E7365911DDDF40E003C8B15 /* Cell */,
 			);
 			path = PhotoControllers;
@@ -171,9 +176,9 @@
 				0EA627A61DD2363900EFD734 /* LoginController.m */,
 				0EA627A81DD237BD00EFD734 /* MenuController.h */,
 				0EA627A91DD237BD00EFD734 /* MenuController.m */,
-				0E73658A1DDDEF19003C8B15 /* PhotoControllers */,
-				0E73657C1DDDB26C003C8B15 /* GroupsControllers */,
 				0E7365721DDDB259003C8B15 /* ProfileControllers */,
+				0E73657C1DDDB26C003C8B15 /* GroupsControllers */,
+				0E73658A1DDDEF19003C8B15 /* PhotoControllers */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -333,6 +338,7 @@
 				0EA627AA1DD237BD00EFD734 /* MenuController.m in Sources */,
 				0E7365861DDDB374003C8B15 /* GroupCell.m in Sources */,
 				0EA6278E1DD2328800EFD734 /* AppDelegate.m in Sources */,
+				0E73659A1DDF0BC5003C8B15 /* PhotoDetailController.m in Sources */,
 				0EA627AD1DD24B6B00EFD734 /* NavigationController.m in Sources */,
 				0E73657F1DDDB26C003C8B15 /* GroupsViewController.m in Sources */,
 				0EA6278B1DD2328800EFD734 /* main.m in Sources */,

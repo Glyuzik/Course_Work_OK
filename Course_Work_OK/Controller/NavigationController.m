@@ -32,7 +32,7 @@
 
 }
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-    if ([[self.topViewController restorationIdentifier] isEqualToString:@"logoVC"]) {
+    if ([[self.topViewController restorationIdentifier] isEqualToString:@"logoVC"] || [[self.topViewController restorationIdentifier] isEqualToString:@"detailVC"]) {
         return UIInterfaceOrientationMaskLandscape;
     }else{
         return UIInterfaceOrientationMaskPortrait;

@@ -8,12 +8,15 @@
 
 #import "PhotoController.h"
 #import "PhotoCell.h"
+#import "PhotoDetailController.h"
 #import <UIImageView+AFNetworking.h>
 #import <OKSDK.h>
 
 @interface PhotoController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>{
     __block NSMutableArray *dataSource;
 }
+
+@property (strong, nonatomic) NSString *photoID;
 
 @end
 
@@ -37,6 +40,13 @@
      ];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    NSNumber *n = @(UIInterfaceOrientationPortrait);
+    [[UIDevice currentDevice] setValue:n forKey:@"orientation"];
+}
+
 #pragma mark - Collection view data source
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
@@ -53,6 +63,18 @@
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     return UIEdgeInsetsMake(0, 0, 0, 0);
+}
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    self.photoID = [[dataSource objectAtIndex:indexPath.item] objectForKey:@"id"];
+    [self performSegueWithIdentifier:@"kSegueDetail" sender:nil];
+}
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if ([segue.identifier isEqualToString:@"kSegueDetail"]) {
+        PhotoDetailController *detail = [segue destinationViewController];
+        detail.photoID = self.photoID;
+    }
+    
 }
 
 

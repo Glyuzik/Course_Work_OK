@@ -313,7 +313,7 @@
             </objects>
             <point key="canvasLocation" x="1505.7971014492755" y="138.58695652173915"/>
         </scene>
-        <!--Photo Controller-->
+        <!--Photo VC-->
         <scene sceneID="K41-8E-tVj">
             <objects>
                 <viewController id="ekK-RZ-g8W" customClass="PhotoController" sceneMemberID="viewController">
@@ -369,13 +369,57 @@
                             <constraint firstItem="s8P-mj-dOg" firstAttribute="top" secondItem="Z3w-6J-QBd" secondAttribute="top" id="VHY-qo-QdQ"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Photo VC" id="Jt3-Ky-AjZ"/>
                     <connections>
                         <outlet property="collectionView" destination="s8P-mj-dOg" id="4K1-iG-lpa"/>
+                        <segue destination="o3C-hX-AQN" kind="show" identifier="kSegueDetail" id="Qnb-eX-S99"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nwy-0q-f2q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1502.8985507246377" y="794.83695652173924"/>
+        </scene>
+        <!--Photo Detail VC-->
+        <scene sceneID="89x-Rl-PrH">
+            <objects>
+                <viewController restorationIdentifier="detailVC" storyboardIdentifier="detailVC" id="o3C-hX-AQN" customClass="PhotoDetailController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MBa-0N-ItF"/>
+                        <viewControllerLayoutGuide type="bottom" id="PZl-ON-aQF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ecy-JD-3uo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L0E-M4-6rw">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="el7-Bf-QfM" appends="YES" id="k0u-Ep-BuO"/>
+                                </connections>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="L0E-M4-6rw" firstAttribute="top" secondItem="Ecy-JD-3uo" secondAttribute="top" id="252-k2-wUp"/>
+                            <constraint firstItem="PZl-ON-aQF" firstAttribute="top" secondItem="L0E-M4-6rw" secondAttribute="bottom" id="HR2-gf-KJO"/>
+                            <constraint firstAttribute="trailing" secondItem="L0E-M4-6rw" secondAttribute="trailing" id="Srj-c4-DSD"/>
+                            <constraint firstItem="L0E-M4-6rw" firstAttribute="leading" secondItem="Ecy-JD-3uo" secondAttribute="leading" id="gxp-Mr-al1"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Photo Detail VC" id="f2y-SV-AiG"/>
+                    <connections>
+                        <outlet property="photo" destination="L0E-M4-6rw" id="H6F-mr-Blm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1o6-Jh-t6C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="el7-Bf-QfM">
+                    <connections>
+                        <action selector="hideAndShowNavigationBar:" destination="o3C-hX-AQN" id="2Lx-j9-tMr"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="2234.7826086956525" y="798.91304347826087"/>
         </scene>
         <!--Profile VC-->
         <scene sceneID="myj-as-FAr">
