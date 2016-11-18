@@ -35,7 +35,7 @@
                     });
                 }
                   error:^(NSError *error) {
-                      NSLog(@"Error - %@", error);
+                      [self error];
                   }
      ];
 }

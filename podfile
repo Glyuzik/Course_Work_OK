@@ -1,4 +1,5 @@
 target ‘Course_Work_OK’ do
   pod 'ok-ios-sdk'
   pod ‘AFNetworking’
+  pod ‘SVProgressHUD’
 end

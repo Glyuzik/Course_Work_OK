@@ -10,6 +10,7 @@
 #import <UIImageView+AFNetworking.h>
 #import <OKSDK.h>
 #import "User.h"
+#import <SVProgressHUD.h>
 
 
 
@@ -33,6 +34,7 @@
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
     [self userLogo];
+    
 
 }
 
@@ -147,7 +149,6 @@
                     NSString *photoID = [data objectForKey:@"photo_id"];
                     [OKSDK invokeMethod:@"photos.editPhoto" arguments:@{@"photo_id":photoID, @"description":self.descriptionTextField.text}
                                 success:^(NSDictionary* data) {
-                                    NSLog(@"%@", data);
                                     [OKSDK invokeMethod:@"photos.getPhotoInfo" arguments:@{@"photo_id":photoID}
                                                 success:^(NSDictionary* data) {
                                                     

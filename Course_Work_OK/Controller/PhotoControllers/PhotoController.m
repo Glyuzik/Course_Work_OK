@@ -35,7 +35,15 @@
                     });
                 }
                   error:^(NSError *error) {
-                  
+                      typeof(self) weakSelf = self;
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Упс..." message:@"Произошла ошибка. Попробуйте еще раз!" preferredStyle:UIAlertControllerStyleAlert];
+                          [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                              [weakSelf.navigationController popViewControllerAnimated:YES];
+                          }]];
+                          [weakSelf presentViewController:alert animated:YES completion:nil];
+                      });
+
                   }
      ];
 }
