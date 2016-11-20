@@ -8,7 +8,7 @@
 
 #import "PhotoController.h"
 #import "PhotoCell.h"
-#import "PhotoDetailController.h"
+#import "LogoController.h"
 #import <UIImageView+AFNetworking.h>
 #import <OKSDK.h>
 
@@ -75,12 +75,12 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     self.photoID = [[dataSource objectAtIndex:indexPath.item] objectForKey:@"id"];
-    [self performSegueWithIdentifier:@"kSegueDetail" sender:nil];
+    [self performSegueWithIdentifier:@"kSegueLogo" sender:nil];
 }
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if ([segue.identifier isEqualToString:@"kSegueDetail"]) {
-        PhotoDetailController *detail = [segue destinationViewController];
-        detail.photoID = self.photoID;
+    if ([segue.identifier isEqualToString:@"kSegueLogo"]) {
+        LogoController *logo = [segue destinationViewController];
+        logo.photoID = self.photoID;
     }
     
 }

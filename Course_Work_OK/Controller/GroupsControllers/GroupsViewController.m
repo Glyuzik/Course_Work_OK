@@ -12,8 +12,11 @@
 #import <UIImageView+AFNetworking.h>
 
 @interface GroupsViewController ()<UITableViewDelegate, UITableViewDataSource>{
-    __block NSMutableArray *dataSource;
+    __block NSMutableArray *arrayID;
+    __block NSDictionary *dataSourcePhoto;
+    __block NSMutableArray *dataSourceName;
 
+    GroupCell *cell;
 }
 
 @end
@@ -23,21 +26,56 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    dataSource = [NSMutableArray array];
-
+    
     [OKSDK invokeMethod:@"group.getUserGroupsV2" arguments:@{}
                 success:^(NSDictionary* data) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [dataSource setArray:[data objectForKey:@"groups"]];
-                        [self.tableView reloadData];
-                        
-                        // NSLog(@"brak");
-                    });
+                        arrayID = [NSMutableArray array];
+                        [arrayID setArray:[data objectForKey:@"groups"]];
+                    
+                    NSMutableArray *array = [NSMutableArray array];
+                    for (__strong NSDictionary *group in arrayID) {
+                        NSString *groupid = [group objectForKey:@"groupId"];
+                        [array addObject:groupid];
+                    }
+                    NSString *groupID = [NSString stringWithFormat:@"%@", [array componentsJoinedByString:@","]];
+                    ///////////
+                    [OKSDK invokeMethod:@"group.getInfo" arguments:@{@"uids":groupID,@"fields":@"name, photo_id"}
+                                success:^(NSArray* data) {
+                                    NSMutableArray *array = [NSMutableArray array];
+                                    for (__strong NSDictionary *photoId in data) {
+                                        NSString *photo_id = [photoId objectForKey:@"photo_id"];
+                                        [array addObject:photo_id];
+                                    }
+                                    NSString *photoID = [NSString stringWithFormat:@"%@", [array componentsJoinedByString:@","]];
+                                    ///
+                                    [OKSDK invokeMethod:@"photos.getInfo" arguments:@{@"photo_ids":photoID}
+                                                success:^(NSArray* data) {
+
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        dataSourcePhoto = [NSDictionary new];
+                                                        dataSourcePhoto = data;
+                                                    });
+                                                }
+                                                  error:^(NSError *error) {
+                                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                                          cell.groupLogo.image = [UIImage imageNamed:@"hidden"];
+                                                      });
+                                                  }];
+                                    ///
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        
+                                    });
+                                }
+                                  error:^(NSError *error) {
+                                      
+                                      [self error];
+                                  }];
+                    ///////////
+                    
                 }
                   error:^(NSError *error) {
                       [self error];
-                  }
-     ];
+                  }];
 }
 
 - (void)error{
@@ -55,49 +93,17 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-            return dataSource.count;
+            return arrayID.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:@"groupCell" forIndexPath:indexPath];
+    cell = [tableView dequeueReusableCellWithIdentifier:@"groupCell" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    [OKSDK invokeMethod:@"group.getUserGroupsV2" arguments:@{}
-                success:^(NSDictionary* data) {
-                    NSString *groupID = [[dataSource objectAtIndex:indexPath.row] objectForKey:@"groupId"];
-                    ///////////
-                    [OKSDK invokeMethod:@"group.getInfo" arguments:@{@"uids":groupID,@"fields":@"name, photo_id"}
-                                success:^(NSArray* data) {
-                                    NSString *photoID = [[data objectAtIndex:0] objectForKey:@"photo_id"];
-                                    ///
-                                    [OKSDK invokeMethod:@"photos.getPhotoInfo" arguments:@{@"photo_id":photoID}
-                                                success:^(NSDictionary* data) {
-                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                        [cell.groupLogo setImageWithURL:[NSURL URLWithString:[data valueForKeyPath:@"photo.pic50x50"]]];
-                                                    });
-                                                }
-                                                  error:^(NSError *error) {
-                                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                                      cell.groupLogo.image = [UIImage imageNamed:@"hidden"];
-                                                      [self.tableView reloadData];
-                                                          });
-                                                  }];
-                                    ///
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                        cell.groupName.text = [[data objectAtIndex:0] objectForKey:@"name"];
-                                    });
-                                }
-                                  error:^(NSError *error) {
-                                      
-                                      [self error];
-                                  }];
-                    ///////////
-
-                }
-                  error:^(NSError *error) {
-                      [self error];
-                  }];
-    return cell;
+   // [cell.groupLogo setImageWithURL:[NSURL URLWithString:[data valueForKeyPath:@"photo.pic50x50"]]];
+    //cell.groupName.text = [[data objectAtIndex:0] objectForKey:@"name"];
+    
+        return cell;
 }
 
 @end

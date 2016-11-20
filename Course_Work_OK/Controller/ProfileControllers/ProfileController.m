@@ -11,13 +11,19 @@
 #import <UIImageView+AFNetworking.h>
 #import "LogoController.h"
 #import "User.h"
+#import <SVProgressHUD.h>
 
-@interface ProfileController ()
+@interface ProfileController (){
+    __block NSString *photoID;
+    __block NSString *currentUserID;
+
+    
+}
 
 @property (weak, nonatomic) IBOutlet UIImageView *userLogo;
 @property (weak, nonatomic) IBOutlet UILabel *userName, *birthday, *gender, *status, *location;
 @property (weak, nonatomic) NSString *imageUrlString;
-@property (weak, nonatomic) IBOutlet UIButton *suggest, *invite, *post;
+
 
 @end
 
@@ -25,12 +31,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [SVProgressHUD show];
     
     self.userLogo.userInteractionEnabled = YES;
     self.status.userInteractionEnabled = YES;
     
     [self elitVC];
-    [self currentUser];
+    [self User];
     
 }
 
@@ -59,32 +66,41 @@
     self.gender.text = nil;
     self.status.text = nil;
     self.location.text = nil;
-    self.post.hidden = YES;
-    self.suggest.hidden = YES;
-    self.invite.hidden = YES;
+    self.post.alpha = 0;
+    self.suggest.alpha = 0;
+    self.invite.alpha = 0;
+    self.userLogo.alpha = 0;
 
 }
 
-- (void)currentUser{
+- (void)User{
     typeof(self) weakSelf = self;
-    [OKSDK invokeMethod:@"users.getCurrentUser" arguments:@{@"fields": @"pic1024x768, name, birthday, age, gender, current_status, location"}
+    [OKSDK invokeMethod:@"users.getCurrentUser" arguments:@{@"fields":@"uid"}
                 success:^(NSDictionary* data) {
-                    
+                    currentUserID = [data objectForKey:@"uid"];
+                }
+                  error:^(NSError *error) {}
+     ];
+    [OKSDK invokeMethod:@"users.getInfo" arguments:@{@"fields": @"pic640x480, name, birthday, age, gender, current_status, location, photo_id", @"uids":self.userID}
+                success:^(NSDictionary* data) {
                     dispatch_async(dispatch_get_main_queue(), ^{
+                        [SVProgressHUD dismiss];
                     User *user = [[User alloc] initUserWithDictionary:data];
-                        
+                        photoID = user.photoID;
                     weakSelf.imageUrlString = user.imageUrlString;
                     [weakSelf.userLogo setImageWithURL:[NSURL URLWithString:self.imageUrlString]];
+                    weakSelf.userLogo.alpha = 1;
                         
                     weakSelf.userName.text = user.userName;
                     weakSelf.gender.text = user.gender;
                     weakSelf.birthday.text = user.birthday;
                     weakSelf.status.text = user.status;
                     weakSelf.location.text = user.location;
-                        
-                        weakSelf.post.hidden = NO;
-                        weakSelf.suggest.hidden = NO;
-                        weakSelf.invite.hidden = NO;
+                        if ([self.userID isEqualToString:currentUserID]) {
+                            weakSelf.post.alpha = 1;
+                            weakSelf.suggest.alpha = 1;
+                            weakSelf.invite.alpha = 1;
+                        }
                     });
                     
                 }
@@ -92,7 +108,12 @@
                       [self error];
                   }];
 }
-
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if ([segue.identifier isEqualToString:@"kSegueLogo"]) {
+        LogoController *logo = [segue destinationViewController];
+        logo.photoID = photoID;
+    }
+}
 
 #pragma mark - Action
 
@@ -101,7 +122,7 @@
 }
 - (IBAction)showStatus:(UITapGestureRecognizer *)sender{
     typeof(self) weakSelf = self;
-    [OKSDK invokeMethod:@"users.getCurrentUser" arguments:@{@"fields": @"current_status"}
+    [OKSDK invokeMethod:@"users.getInfo" arguments:@{@"uids":self.userID, @"fields": @"current_status"}
                 success:^(NSDictionary* data) {
                     
                     dispatch_async(dispatch_get_main_queue(), ^{

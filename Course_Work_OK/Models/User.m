@@ -10,28 +10,29 @@
 
 @implementation User
 
-- (instancetype)initUserWithDictionary:(NSDictionary *)dictionary
+- (instancetype)initUserWithDictionary:(NSArray *)array;
 {
     self = [super init];
     if (self) {
-        self.imageUrlString = [dictionary objectForKey:@"pic1024x768"];
+        self.imageUrlString = [[array objectAtIndex:0] objectForKey:@"pic640x480"];
         
-        self.userName = [dictionary objectForKey:@"name"];
+        self.userName = [[array objectAtIndex:0] objectForKey:@"name"];
         
-        NSString *gender = [[dictionary objectForKey:@"gender"] isEqualToString:@"male"]? @"Мужской":@"Женский";
+        NSString *gender = [[[array objectAtIndex:0] objectForKey:@"gender"] isEqualToString:@"male"]? @"Мужской":@"Женский";
         self.gender = [NSString stringWithFormat:@"Пол:%@", gender];
         
-        self.birthday = [NSString stringWithFormat:@"День рождения:%@ (%@ лет)", [dictionary objectForKey:@"birthday"], [dictionary objectForKey:@"age"]];
+        if ([[array objectAtIndex:0] objectForKey:@"age"] != nil) {
+             self.birthday = [NSString stringWithFormat:@"День рождения:%@ (%@ лет)", [[array objectAtIndex:0] objectForKey:@"birthday"], [[array objectAtIndex:0] objectForKey:@"age"]];
+        }else{
+        self.birthday = [NSString stringWithFormat:@"День рождения:%@", [[array objectAtIndex:0] objectForKey:@"birthday"]];
+        }
         
-        self.status = [dictionary objectForKey:@"current_status"];
+        self.status = [[array objectAtIndex:0] objectForKey:@"current_status"];
         
-        self.location = [NSString stringWithFormat:@"%@, %@",[dictionary valueForKeyPath:@"location.countryName"], [dictionary valueForKeyPath:@"location.city"]];
+        self.location = [NSString stringWithFormat:@"%@, %@",[[array objectAtIndex:0] valueForKeyPath:@"location.countryName"], [[array objectAtIndex:0] valueForKeyPath:@"location.city"]];
         
-        self.photoID = [dictionary objectForKey:@"photo_id"];
+        self.photoID = [[array objectAtIndex:0]objectForKey:@"photo_id"];
         
-        self.photoDescription = [dictionary valueForKeyPath:@"photo.text"];
-        
-        self.photoLikeCount = [dictionary valueForKeyPath:@"photo.like_count"];
     }
     return self;
 }

@@ -10,9 +10,14 @@
 #import "FriendCell.h"
 #import <UIImageView+AFNetworking.h>
 #import <OKSDK.h>
-
+#import <SVProgressHUD.h>
+#import "ProfileController.h"
 @interface FriendsController ()<UITableViewDataSource, UITableViewDelegate>{
-    __block NSMutableArray *dataSource;
+    __block NSArray *dataSource;
+    __block NSMutableArray *friendsID;
+    __block NSMutableArray *friendsID2;
+    
+     NSString *userID;
 }
 
 @end
@@ -21,13 +26,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self friendsList];
+    
+    }
+
+- (void)friendsList{
+    [SVProgressHUD show];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
     [OKSDK invokeMethod:@"friends.get" arguments:@{}
                 success:^(NSArray* data) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        dataSource = [NSMutableArray array];
-                        [dataSource setArray:[data subarrayWithRange:NSMakeRange(0, 99)]];
-                        [self.tableView reloadData];
-                    });
+                    friendsID = [NSMutableArray array];
+                    if (data.count < 100) {
+                        [friendsID setArray:data];
+                    }else{
+                        [friendsID setArray:[data subarrayWithRange:NSMakeRange(0, 99)]];
+                    }
+                    
+                    NSString *stringID = [NSString stringWithFormat:@"%@", [friendsID componentsJoinedByString:@","]];
+                    
+                    [OKSDK invokeMethod:@"users.getInfo" arguments:@{@"fields":@"name, pic1024x768", @"uids":stringID}
+                                success:^(NSArray* data) {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        friendsID2 = [NSMutableArray array];
+                                        for (NSDictionary *dict in data) {
+                                            NSString *string = [dict objectForKey:@"uid"];
+                                            [friendsID2 addObject:string];
+                                        }
+                                        [SVProgressHUD dismiss];
+                                        dataSource = data;
+                                        [self.tableView reloadData];
+                                    });
+                                }
+                                  error:^(NSError *error) {
+                                      [self error];
+                                  }];
                 }
                   error:^(NSError *error) {
                       [self error];
@@ -46,6 +78,15 @@
     });
 
 }
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if ([segue.identifier isEqualToString:@"kSegueProfile"]) {
+        ProfileController *profile = [segue destinationViewController];
+        profile.userID = userID;
+        profile.invite.alpha = 0;
+        profile.suggest.alpha = 0;
+        profile.post.alpha = 0;
+    }
+}
 
 #pragma mark - Table view data source
 
@@ -58,20 +99,9 @@
     FriendCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"friendCell" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    
-    NSString *stringID = [NSString stringWithFormat:@"%@", [dataSource componentsJoinedByString:@","]];
-    
-    [OKSDK invokeMethod:@"users.getInfo" arguments:@{@"fields":@"name, pic1024x768", @"uids":stringID}
-                success:^(NSArray* data) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        cell.name.text = [[data objectAtIndex:indexPath.row] objectForKey:@"name"];
-                        [cell.logo setImageWithURL:[NSURL URLWithString:[[data objectAtIndex:indexPath.row] objectForKey:@"pic1024x768"]]];
-                    });
-                }
-                  error:^(NSError *error) {
-                      [self error];
-                  }
-     ];
+    cell.name.text = [[dataSource objectAtIndex:indexPath.row] objectForKey:@"name"];
+    [cell.logo setImageWithURL:[NSURL URLWithString:[[dataSource objectAtIndex:indexPath.row] objectForKey:@"pic1024x768"]] placeholderImage:[UIImage imageNamed:@"hidden"]];
+
     return cell;
 }
 
@@ -80,6 +110,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 77;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    userID = [friendsID2 objectAtIndex:indexPath.row];
+    [self performSegueWithIdentifier:@"kSegueProfile" sender:nil];
+}
+
 
 
 @end

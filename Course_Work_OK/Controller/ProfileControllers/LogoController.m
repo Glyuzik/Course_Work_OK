@@ -15,15 +15,18 @@
 
 
 @interface LogoController ()<UITextFieldDelegate>{
-   
+    __block NSString *currentUserID;
+    __block NSString *userID;
+
+    
 }
 
-@property (weak, nonatomic) NSString *photoID;
 @property (weak, nonatomic) IBOutlet UIView *descView, *bgView;
 @property (weak, nonatomic) IBOutlet UILabel *likeCount;
 @property (weak, nonatomic) IBOutlet UIImageView *like;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (weak, nonatomic) IBOutlet UIButton *done;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *addDescription;
 
 @end
 
@@ -49,7 +52,7 @@
     typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Упс..." message:@"Произошла ошибка. Попробуйте еще раз!" preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakSelf.navigationController popViewControllerAnimated:YES];
         }]];
         [weakSelf presentViewController:alert animated:YES completion:nil];
@@ -60,37 +63,35 @@
 
 - (void)userLogo{
     typeof(self) weakSelf = self;
-    [OKSDK invokeMethod:@"users.getCurrentUser" arguments:@{@"fields": @"pic1024x768, photo_id"}
+    [OKSDK invokeMethod:@"users.getCurrentUser" arguments:@{@"fields":@"uid"}
+                success:^(NSDictionary* data) {
+                    currentUserID = [data objectForKey:@"uid"];
+                }
+                  error:^(NSError *error) {}
+     ];
+    [OKSDK invokeMethod:@"photos.getPhotoInfo" arguments:@{@"photo_id":self.photoID}
                 success:^(NSDictionary* data) {
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        User *user = [[User alloc] initUserWithDictionary:data];
-                        weakSelf.imageURLString = user.imageUrlString;
+                        userID = [data valueForKeyPath:@"photo.user_id"];
+                        weakSelf.imageURLString = [data valueForKeyPath:@"photo.pic640x480"];
                         [weakSelf.logo setImageWithURL:[NSURL URLWithString:weakSelf.imageURLString]];
-                                            });
+                
+                        weakSelf.photoDescription.text = [data valueForKeyPath:@"photo.text"];
+                        weakSelf.likeCount.text = [NSString stringWithFormat:@"%@", [data valueForKeyPath:@"photo.like_count"]];
+                        weakSelf.descriptionTextField.text = weakSelf.photoDescription.text;
+                        if (![userID isEqualToString:currentUserID]) {
+                            weakSelf.navigationItem.rightBarButtonItem.title = nil;
+                            weakSelf.navigationItem.rightBarButtonItem.enabled = NO;
+                        }
+                    });
                     
-                    NSString *photoID = [data objectForKey:@"photo_id"];
-                    
-                    [OKSDK invokeMethod:@"photos.getPhotoInfo" arguments:@{@"photo_id":photoID}
-                                success:^(NSDictionary* data) {
-                                    
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                        User *user = [[User alloc] initUserWithDictionary:data];
-                                        weakSelf.photoDescription.text = user.photoDescription;
-                                        weakSelf.likeCount.text = [NSString stringWithFormat:@"%@", user.photoLikeCount];
-                                        weakSelf.descriptionTextField.text = user.photoDescription;
-                                    });
-                                    
-                                }
-                     
-                                  error:^(NSError *error) {
-                                      
-                                      [self error];
-                                      
-                                  }];
                 }
+     
                   error:^(NSError *error) {
+                      
                       [self error];
+                      
                   }];
 }
 
@@ -143,18 +144,14 @@
     }];
 
     typeof(self) weakSelf = self;
-    [OKSDK invokeMethod:@"users.getCurrentUser" arguments:@{@"fields":@"photo_id"}
-                success:^(NSDictionary* data) {
-                    
-                    NSString *photoID = [data objectForKey:@"photo_id"];
-                    [OKSDK invokeMethod:@"photos.editPhoto" arguments:@{@"photo_id":photoID, @"description":self.descriptionTextField.text}
+    
+                    [OKSDK invokeMethod:@"photos.editPhoto" arguments:@{@"photo_id":self.photoID, @"description":self.descriptionTextField.text}
                                 success:^(NSDictionary* data) {
-                                    [OKSDK invokeMethod:@"photos.getPhotoInfo" arguments:@{@"photo_id":photoID}
+                                    [OKSDK invokeMethod:@"photos.getPhotoInfo" arguments:@{@"photo_id":self.photoID}
                                                 success:^(NSDictionary* data) {
-                                                    
                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                        User *user = [[User alloc] initUserWithDictionary:data];
-                                                        weakSelf.photoDescription.text = user.photoDescription;
+                                                        
+                                                        weakSelf.photoDescription.text = [data valueForKeyPath:@"photo.text"];
                                                     });
                                                 }
                                                   error:^(NSError *error) {
@@ -164,10 +161,6 @@
                                   error:^(NSError *error) {
                                       [weakSelf error];
                                   }];
-                }
-                  error:^(NSError *error) {
-                      [weakSelf error];
-                  }];
 }
 
 

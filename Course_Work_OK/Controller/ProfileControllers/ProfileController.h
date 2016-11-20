@@ -10,4 +10,7 @@
 
 @interface ProfileController : UIViewController
 
+@property (strong, nonatomic) NSString *userID;
+@property (weak, nonatomic) IBOutlet UIButton *suggest, *invite, *post;
+
 @end

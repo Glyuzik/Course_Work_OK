@@ -13,6 +13,8 @@
 @property (strong, nonatomic) NSString *imageURLString;
 @property (weak, nonatomic) IBOutlet UIImageView *logo;
 @property (weak, nonatomic) IBOutlet UILabel *photoDescription;
+@property (weak, nonatomic) NSString *photoID;
+
 
 
 @end

@@ -8,9 +8,12 @@
 
 #import "MenuController.h"
 #import <OKSDK.h>
+#import "ProfileController.h"
 
 
-@interface MenuController ()
+@interface MenuController (){
+    __block NSString *userID;
+}
 
 @end
 
@@ -19,6 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.hidesBackButton = YES;
+    [self currentUser];
 }
 
 - (IBAction)logoutButtonClicked:(UIBarButtonItem *)logout{
@@ -34,7 +38,25 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"Нет" style:UIAlertActionStyleDefault handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
 }
+- (void)currentUser{
+    [OKSDK invokeMethod:@"users.getCurrentUser" arguments:@{}
+                success:^(NSDictionary* data) {
+                    userID = [data objectForKey:@"uid"];
+                }
+                  error:^(NSError *error) {}
+     ];
+}
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if ([segue.identifier isEqualToString:@"kSegueProfile"]) {
+        ProfileController *profile = [segue destinationViewController];
+        profile.userID = userID;
+        
+    }
+}
 
+- (IBAction)myProfileButtonClicked:(UIButton *)sender{
+    [self performSegueWithIdentifier:@"kSegueProfile" sender:nil];
+}
 
 
 

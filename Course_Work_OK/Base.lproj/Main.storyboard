@@ -120,7 +120,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="LSr-WR-AUU" kind="show" id="S6I-Z0-y7x"/>
+                                    <action selector="myProfileButtonClicked:" destination="b3G-Py-GEY" eventType="touchUpInside" id="i8K-dp-75m"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rn6-DT-Aia">
@@ -253,10 +253,13 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="LSr-WR-AUU" kind="show" identifier="kSegueProfile" id="Ukg-2K-NiG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AZR-XR-j1l" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="760.79999999999995" y="138.98050974512745"/>
+            <point key="canvasLocation" x="643" y="139"/>
         </scene>
         <!--Groups VC-->
         <scene sceneID="VLf-ly-GPJ">
@@ -400,7 +403,7 @@
                     <navigationItem key="navigationItem" title="Photo VC" id="Jt3-Ky-AjZ"/>
                     <connections>
                         <outlet property="collectionView" destination="s8P-mj-dOg" id="4K1-iG-lpa"/>
-                        <segue destination="o3C-hX-AQN" kind="show" identifier="kSegueDetail" id="Qnb-eX-S99"/>
+                        <segue destination="Ekm-W1-ODx" kind="show" identifier="kSegueLogo" id="iD5-7M-mrG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nwy-0q-f2q" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -428,7 +431,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="77"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hmu-3g-hi2" id="wQO-q0-Ruc">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="76.666666666666671"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="77"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kE8-it-9bH">
@@ -491,52 +494,11 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="wIb-ad-pnQ" id="gF5-Ze-B9T"/>
+                        <segue destination="LSr-WR-AUU" kind="show" identifier="kSegueProfile" id="q7Q-7q-OCp"/>
                     </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="1448" y="1013"/>
-        </scene>
-        <!--Photo Detail VC-->
-        <scene sceneID="89x-Rl-PrH">
-            <objects>
-                <viewController restorationIdentifier="detailVC" storyboardIdentifier="detailVC" id="o3C-hX-AQN" customClass="PhotoDetailController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="MBa-0N-ItF"/>
-                        <viewControllerLayoutGuide type="bottom" id="PZl-ON-aQF"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ecy-JD-3uo">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L0E-M4-6rw">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="el7-Bf-QfM" appends="YES" id="k0u-Ep-BuO"/>
-                                </connections>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="L0E-M4-6rw" firstAttribute="top" secondItem="Ecy-JD-3uo" secondAttribute="top" id="252-k2-wUp"/>
-                            <constraint firstItem="PZl-ON-aQF" firstAttribute="top" secondItem="L0E-M4-6rw" secondAttribute="bottom" id="HR2-gf-KJO"/>
-                            <constraint firstAttribute="trailing" secondItem="L0E-M4-6rw" secondAttribute="trailing" id="Srj-c4-DSD"/>
-                            <constraint firstItem="L0E-M4-6rw" firstAttribute="leading" secondItem="Ecy-JD-3uo" secondAttribute="leading" id="gxp-Mr-al1"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Photo Detail VC" id="f2y-SV-AiG"/>
-                    <connections>
-                        <outlet property="photo" destination="L0E-M4-6rw" id="H6F-mr-Blm"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1o6-Jh-t6C" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="el7-Bf-QfM">
-                    <connections>
-                        <action selector="hideAndShowNavigationBar:" destination="o3C-hX-AQN" id="2Lx-j9-tMr"/>
-                    </connections>
-                </tapGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="2113" y="336"/>
         </scene>
         <!--Profile VC-->
         <scene sceneID="myj-as-FAr">
@@ -728,7 +690,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1448" y="-1017"/>
+            <point key="canvasLocation" x="2454" y="671"/>
         </scene>
         <!--LargeImage-->
         <scene sceneID="VdY-0h-ggn">
@@ -819,7 +781,7 @@
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="50"/>
+                                        <integer key="value" value="15"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
@@ -853,6 +815,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addDescription" destination="sDY-L8-0b7" id="rHr-Cq-Jfc"/>
                         <outlet property="bgView" destination="5bz-lw-Ppu" id="tV1-kn-fZS"/>
                         <outlet property="descView" destination="sVM-8h-caQ" id="zJV-Q5-cht"/>
                         <outlet property="descriptionTextField" destination="fjZ-L9-tS0" id="GZ1-el-xw7"/>
@@ -870,11 +833,15 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2114" y="-1017"/>
+            <point key="canvasLocation" x="3636" y="-541"/>
         </scene>
     </scenes>
     <resources>
         <image name="like" width="48" height="48"/>
         <image name="ok" width="300" height="300"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="q7Q-7q-OCp"/>
+        <segue reference="S77-6c-mdL"/>
+    </inferredMetricsTieBreakers>
 </document>
