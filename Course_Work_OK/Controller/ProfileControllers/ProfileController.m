@@ -85,7 +85,7 @@
                 success:^(NSDictionary* data) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [SVProgressHUD dismiss];
-                    User *user = [[User alloc] initUserWithDictionary:data];
+                    User *user = [[User alloc] initUserWithArray:data];
                         photoID = user.photoID;
                     weakSelf.imageUrlString = user.imageUrlString;
                     [weakSelf.userLogo setImageWithURL:[NSURL URLWithString:self.imageUrlString]];
@@ -126,7 +126,7 @@
                 success:^(NSDictionary* data) {
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        User *user = [[User alloc] initUserWithDictionary:data];
+                        User *user = [[User alloc] initUserWithArray:data];
                         weakSelf.status.text = user.status;
                          UIAlertController *alert = [UIAlertController alertControllerWithTitle:weakSelf.status.text message:nil preferredStyle:UIAlertControllerStyleAlert];
                         [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];

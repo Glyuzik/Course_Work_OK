@@ -408,12 +408,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nwy-0q-f2q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1448" y="336"/>
+            <point key="canvasLocation" x="1448" y="333"/>
         </scene>
         <!--Friends Controller-->
         <scene sceneID="ASR-s2-kfx">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Df7-e2-pYR" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController restorationIdentifier="friendsVC" storyboardIdentifier="friendsVC" id="uJ6-fO-9bs" customClass="FriendsController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="egM-u1-QZw"/>
@@ -497,8 +496,9 @@
                         <segue destination="LSr-WR-AUU" kind="show" identifier="kSegueProfile" id="q7Q-7q-OCp"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Df7-e2-pYR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1448" y="1013"/>
+            <point key="canvasLocation" x="642" y="1201"/>
         </scene>
         <!--Profile VC-->
         <scene sceneID="myj-as-FAr">
@@ -690,9 +690,9 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2454" y="671"/>
+            <point key="canvasLocation" x="1448" y="1201"/>
         </scene>
-        <!--LargeImage-->
+        <!--Logo VC-->
         <scene sceneID="VdY-0h-ggn">
             <objects>
                 <viewController restorationIdentifier="logoVC" storyboardIdentifier="logoVC" id="Ekm-W1-ODx" customClass="LogoController" sceneMemberID="viewController">
@@ -710,13 +710,6 @@
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="N88-tU-9r5" appends="YES" id="b9u-Fc-aND"/>
                                 </connections>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="like" translatesAutoresizingMaskIntoConstraints="NO" id="kD9-3o-Ion">
-                                <rect key="frame" x="323" y="696" width="35" height="32"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="2Xq-wN-y7t"/>
-                                    <constraint firstAttribute="width" constant="35" id="cNb-Tz-Sfe"/>
-                                </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rj7-Ko-b9s">
                                 <rect key="frame" x="366" y="702" width="42" height="21"/>
@@ -736,8 +729,23 @@
                             </label>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5bz-lw-Ppu">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XBp-OS-oLg">
+                                        <rect key="frame" x="323" y="615" width="102" height="48"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="like"/>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <imageView alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="like" translatesAutoresizingMaskIntoConstraints="NO" id="kD9-3o-Ion">
+                                <rect key="frame" x="323" y="696" width="35" height="32"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="2Xq-wN-y7t"/>
+                                    <constraint firstAttribute="width" constant="35" id="cNb-Tz-Sfe"/>
+                                </constraints>
+                            </imageView>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sVM-8h-caQ">
                                 <rect key="frame" x="67.666666666666686" y="288" width="279" height="160"/>
                                 <subviews>
@@ -807,7 +815,7 @@
                             <constraint firstItem="bRf-TI-AYO" firstAttribute="top" secondItem="kD9-3o-Ion" secondAttribute="bottom" constant="8" id="veo-Uz-qEt"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="LargeImage" id="Ejj-ay-t8e">
+                    <navigationItem key="navigationItem" title="Logo VC" id="Ejj-ay-t8e">
                         <barButtonItem key="rightBarButtonItem" title="Добавить описание" id="sDY-L8-0b7">
                             <connections>
                                 <action selector="editPhotoDescription:" destination="Ekm-W1-ODx" id="y4I-F9-5pC"/>
@@ -833,7 +841,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3636" y="-541"/>
+            <point key="canvasLocation" x="2267" y="333"/>
         </scene>
     </scenes>
     <resources>

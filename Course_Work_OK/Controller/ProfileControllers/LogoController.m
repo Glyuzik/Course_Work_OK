@@ -17,7 +17,6 @@
 @interface LogoController ()<UITextFieldDelegate>{
     __block NSString *currentUserID;
     __block NSString *userID;
-
     
 }
 
@@ -87,7 +86,6 @@
                     });
                     
                 }
-     
                   error:^(NSError *error) {
                       
                       [self error];

@@ -15,6 +15,6 @@
 @property (strong, nonatomic) NSString *imageUrlString;
 @property (strong, nonatomic) NSNumber *photoLikeCount;
 
--(id)initUserWithDictionary:(NSDictionary *)dictionary;
+-(id)initUserWithArray:(NSDictionary *)dictionary;
 
 @end

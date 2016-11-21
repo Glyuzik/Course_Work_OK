@@ -25,7 +25,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.collectionView.delegate = self;
+    [self photoList];
     
+   }
+- (void)photoList{
     [OKSDK invokeMethod:@"photos.getPhotos" arguments:@{}
                 success:^(NSDictionary* data) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -43,9 +46,10 @@
                           }]];
                           [weakSelf presentViewController:alert animated:YES completion:nil];
                       });
-
+                      
                   }
      ];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {

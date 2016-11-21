@@ -10,7 +10,7 @@
 
 @implementation User
 
-- (instancetype)initUserWithDictionary:(NSArray *)array;
+- (instancetype)initUserWithArray:(NSArray *)array;
 {
     self = [super init];
     if (self) {

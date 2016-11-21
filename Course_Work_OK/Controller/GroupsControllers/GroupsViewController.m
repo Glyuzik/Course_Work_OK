@@ -13,8 +13,7 @@
 
 @interface GroupsViewController ()<UITableViewDelegate, UITableViewDataSource>{
     __block NSMutableArray *arrayID;
-    __block NSDictionary *dataSourcePhoto;
-    __block NSMutableArray *dataSourceName;
+    __block NSMutableArray *dataSource;
 
     GroupCell *cell;
 }
@@ -26,11 +25,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self groupList];
     
-    [OKSDK invokeMethod:@"group.getUserGroupsV2" arguments:@{}
+}
+
+- (void)groupList{
+    [OKSDK invokeMethod:@"group.getUserGroupsV2" arguments:@{@"count":@"100"}
                 success:^(NSDictionary* data) {
-                        arrayID = [NSMutableArray array];
-                        [arrayID setArray:[data objectForKey:@"groups"]];
+                    arrayID = [NSMutableArray array];
+                    [arrayID setArray:[data objectForKey:@"groups"]];
                     
                     NSMutableArray *array = [NSMutableArray array];
                     for (__strong NSDictionary *group in arrayID) {
@@ -39,31 +42,12 @@
                     }
                     NSString *groupID = [NSString stringWithFormat:@"%@", [array componentsJoinedByString:@","]];
                     ///////////
-                    [OKSDK invokeMethod:@"group.getInfo" arguments:@{@"uids":groupID,@"fields":@"name, photo_id"}
+                    [OKSDK invokeMethod:@"group.getInfo" arguments:@{@"uids":groupID,@"fields":@"name, photo_id, group. PIC_AVATAR"}
                                 success:^(NSArray* data) {
-                                    NSMutableArray *array = [NSMutableArray array];
-                                    for (__strong NSDictionary *photoId in data) {
-                                        NSString *photo_id = [photoId objectForKey:@"photo_id"];
-                                        [array addObject:photo_id];
-                                    }
-                                    NSString *photoID = [NSString stringWithFormat:@"%@", [array componentsJoinedByString:@","]];
-                                    ///
-                                    [OKSDK invokeMethod:@"photos.getInfo" arguments:@{@"photo_ids":photoID}
-                                                success:^(NSArray* data) {
-
-                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                        dataSourcePhoto = [NSDictionary new];
-                                                        dataSourcePhoto = data;
-                                                    });
-                                                }
-                                                  error:^(NSError *error) {
-                                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                                          cell.groupLogo.image = [UIImage imageNamed:@"hidden"];
-                                                      });
-                                                  }];
-                                    ///
                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                        
+                                        dataSource = [NSMutableArray array];
+                                        [dataSource setArray:data];
+                                        [self.tableView reloadData];
                                     });
                                 }
                                   error:^(NSError *error) {
@@ -76,6 +60,7 @@
                   error:^(NSError *error) {
                       [self error];
                   }];
+
 }
 
 - (void)error{
@@ -100,8 +85,8 @@
     cell = [tableView dequeueReusableCellWithIdentifier:@"groupCell" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-   // [cell.groupLogo setImageWithURL:[NSURL URLWithString:[data valueForKeyPath:@"photo.pic50x50"]]];
-    //cell.groupName.text = [[data objectAtIndex:0] objectForKey:@"name"];
+    [cell.groupLogo setImageWithURL:[NSURL URLWithString:[[dataSource objectAtIndex:indexPath.row] objectForKey:@"picAvatar"]]];
+    cell.groupName.text = [[dataSource objectAtIndex:indexPath.row] objectForKey:@"name"];
     
         return cell;
 }
