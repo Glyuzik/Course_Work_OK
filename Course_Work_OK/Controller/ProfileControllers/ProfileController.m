@@ -84,7 +84,6 @@
     [OKSDK invokeMethod:@"users.getInfo" arguments:@{@"fields": @"pic640x480, name, birthday, age, gender, current_status, location, photo_id", @"uids":self.userID}
                 success:^(NSDictionary* data) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [SVProgressHUD dismiss];
                     User *user = [[User alloc] initUserWithArray:data];
                         photoID = user.photoID;
                     weakSelf.imageUrlString = user.imageUrlString;
@@ -107,6 +106,8 @@
                   error:^(NSError *error) {
                       [self error];
                   }];
+    [SVProgressHUD dismiss];
+
 }
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"kSegueLogo"]) {
@@ -145,7 +146,10 @@
               success:^(NSDictionary *data) {
                   //NSLog(@"%@", data);
               }
-                error:^(NSError *error) {}
+                error:^(NSError *error) {
+                    [self error];
+                
+                }
      ];
 }
 
@@ -153,7 +157,9 @@
     [OKSDK showWidget:@"WidgetInvite" arguments:@{} options:@{} success:^(NSDictionary *data) {
         NSLog(@"%@",data);
     }
-                error:nil];
+                error:^(NSError *error) {
+                    [self error];
+                }];
 }
 
 - (IBAction)suggestWidget:(UIButton *)sender{
@@ -161,7 +167,9 @@
               success:^(NSDictionary *data) {
                   NSLog(@"%@",data);
               }
-                error:^(NSError *error) {}
+                error:^(NSError *error) {
+                    [self error];
+                }
      ];
 }
 

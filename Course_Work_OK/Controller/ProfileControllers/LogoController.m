@@ -25,7 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *like;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (weak, nonatomic) IBOutlet UIButton *done;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *addDescription;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *addDescription;
 
 @end
 
@@ -40,12 +40,12 @@
 
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    NSNumber *n = @(UIInterfaceOrientationLandscapeLeft);
-    [[UIDevice currentDevice] setValue:n forKey:@"orientation"];
-}
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    
+//    NSNumber *n = @(UIInterfaceOrientationLandscapeRight);
+//    [[UIDevice currentDevice] setValue:n forKey:@"orientation"];
+//}
 
 - (void)error{
     typeof(self) weakSelf = self;

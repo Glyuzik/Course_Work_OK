@@ -12,6 +12,7 @@
 #import <OKSDK.h>
 #import <SVProgressHUD.h>
 #import "ProfileController.h"
+
 @interface FriendsController ()<UITableViewDataSource, UITableViewDelegate>{
     __block NSArray *dataSource;
     __block NSMutableArray *friendsID;
@@ -26,6 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self friendsList];
     
     }
@@ -52,7 +54,6 @@
                                             NSString *string = [dict objectForKey:@"uid"];
                                             [friendsID2 addObject:string];
                                         }
-                                        [SVProgressHUD dismiss];
                                         dataSource = data;
                                         [self.tableView reloadData];
                                     });
@@ -65,6 +66,8 @@
                       [self error];
                   }
      ];
+    [SVProgressHUD dismiss];
+
 }
 
 - (void)error{
@@ -101,6 +104,7 @@
     
     cell.name.text = [[dataSource objectAtIndex:indexPath.row] objectForKey:@"name"];
     [cell.logo setImageWithURL:[NSURL URLWithString:[[dataSource objectAtIndex:indexPath.row] objectForKey:@"pic1024x768"]] placeholderImage:[UIImage imageNamed:@"hidden"]];
+
 
     return cell;
 }

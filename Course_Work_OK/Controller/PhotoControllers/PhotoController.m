@@ -14,6 +14,8 @@
 
 @interface PhotoController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>{
     __block NSMutableArray *dataSource;
+    
+    PhotoCell *cell;
 }
 
 @property (strong, nonatomic) NSString *photoID;
@@ -25,6 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.collectionView.delegate = self;
+    
     [self photoList];
     
    }
@@ -66,7 +69,7 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    PhotoCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:@"photoCell" forIndexPath:indexPath];
+    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:@"photoCell" forIndexPath:indexPath];
     [cell.photo setImageWithURL:[NSURL URLWithString:[[dataSource objectAtIndex:indexPath.item] objectForKey:@"pic640x480"]]];
     
     return cell;
@@ -88,7 +91,5 @@
     }
     
 }
-
-
 
 @end
