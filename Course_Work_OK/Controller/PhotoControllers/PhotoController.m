@@ -11,14 +11,18 @@
 #import "LogoController.h"
 #import <UIImageView+AFNetworking.h>
 #import <OKSDK.h>
+#import <CHTCollectionViewWaterfallLayout/CHTCollectionViewWaterfallLayout.h>
 
-@interface PhotoController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>{
+@interface PhotoController ()<UICollectionViewDelegate, UICollectionViewDataSource, CHTCollectionViewDelegateWaterfallLayout>{
     __block NSMutableArray *dataSource;
     
     PhotoCell *cell;
 }
 
 @property (strong, nonatomic) NSString *photoID;
+@property (nonatomic, strong) NSArray *cellSizes;
+
+
 
 @end
 
@@ -26,11 +30,52 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.collectionView.delegate = self;
+    
+   // [self.view addSubview:self.collectionView];
     
     [self photoList];
     
    }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    NSNumber *n = @(UIInterfaceOrientationPortrait);
+    [[UIDevice currentDevice] setValue:n forKey:@"orientation"];
+}
+
+/*- (UICollectionView *)collectionView {
+    if (!_collectionView) {
+        CHTCollectionViewWaterfallLayout *layout = [[CHTCollectionViewWaterfallLayout alloc] init];
+        
+        layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+        layout.columnCount = 2;
+        layout.minimumColumnSpacing = 20;
+        layout.minimumInteritemSpacing = 30;
+        
+        
+        _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+        _collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        _collectionView.dataSource = self;
+        _collectionView.delegate = self;
+        _collectionView.backgroundColor = [UIColor whiteColor];
+        [_collectionView registerClass:[PhotoCell class]
+            forCellWithReuseIdentifier:@"photoCell"];
+        
+    }
+    return _collectionView;
+}
+- (NSArray *)cellSizes {
+    if (!_cellSizes) {
+        _cellSizes = @[
+                       [NSValue valueWithCGSize:CGSizeMake(self.view.frame.size.width/2, self.view.frame.size.height/3)],
+                       [NSValue valueWithCGSize:CGSizeMake(self.view.frame.size.width/2, (self.view.frame.size.height/3)*2)],
+                       [NSValue valueWithCGSize:CGSizeMake(self.view.frame.size.width/2, self.view.frame.size.height/3)],
+                       [NSValue valueWithCGSize:CGSizeMake(self.view.frame.size.width/2, (self.view.frame.size.height/3)*2)]
+                       ];
+    }
+    return _cellSizes;
+}*/
+
 - (void)photoList{
     [OKSDK invokeMethod:@"photos.getPhotos" arguments:@{}
                 success:^(NSDictionary* data) {
@@ -55,13 +100,6 @@
 
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    NSNumber *n = @(UIInterfaceOrientationPortrait);
-    [[UIDevice currentDevice] setValue:n forKey:@"orientation"];
-}
-
 #pragma mark - Collection view data source
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
@@ -76,9 +114,6 @@
     
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    return UIEdgeInsetsMake(0, 0, 0, 0);
-}
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     self.photoID = [[dataSource objectAtIndex:indexPath.item] objectForKey:@"id"];
@@ -89,7 +124,16 @@
         LogoController *logo = [segue destinationViewController];
         logo.photoID = self.photoID;
     }
-    
 }
+
+
+#pragma Mark - CHT collection view delegate waterfall layout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return CGSizeMake((self.view.frame.size.width/2)-7.5f, (self.view.frame.size.height/3)-7.5f);
+}
+
+
 
 @end

@@ -17,6 +17,7 @@
         self.imageUrlString = [[array objectAtIndex:0] objectForKey:@"pic640x480"];
         
         self.userName = [[array objectAtIndex:0] objectForKey:@"name"];
+        self.userFirstName = [[array objectAtIndex:0] objectForKey:@"first_name"];
         
         NSString *gender = [[[array objectAtIndex:0] objectForKey:@"gender"] isEqualToString:@"male"]? @"Мужской":@"Женский";
         self.gender = [NSString stringWithFormat:@"Пол:%@", gender];

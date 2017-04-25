@@ -1,5 +1,6 @@
-target ‘Course_Work_OK’ do
+target 'Course_Work_OK' do
   pod 'ok-ios-sdk'
-  pod ‘AFNetworking’
-  pod ‘SVProgressHUD’
+  pod 'AFNetworking'
+  pod 'SVProgressHUD'
+  pod 'CHTCollectionViewWaterfallLayout'
 end

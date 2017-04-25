@@ -21,7 +21,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *userLogo;
-@property (weak, nonatomic) IBOutlet UILabel *userName, *birthday, *gender, *status, *location;
+@property (weak, nonatomic) IBOutlet UILabel *userName, *userFirstName,*birthday, *gender, *status, *location;
 @property (weak, nonatomic) NSString *imageUrlString;
 
 
@@ -38,7 +38,7 @@
     
     [self elitVC];
     [self User];
-    
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -47,13 +47,11 @@
     NSNumber *n = @(UIInterfaceOrientationPortrait);
     [[UIDevice currentDevice] setValue:n forKey:@"orientation"];
 }
-
 - (void)error{
     typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Упс..." message:@"Произошла ошибка. Попробуйте еще раз!" preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            [weakSelf.navigationController popViewControllerAnimated:YES];
         }]];
         [weakSelf presentViewController:alert animated:YES completion:nil];
     });
@@ -61,6 +59,7 @@
 }
 
 -(void)elitVC{
+    self.title = nil;
     self.userName.text = nil;
     self.birthday.text = nil;
     self.gender.text = nil;
@@ -81,7 +80,7 @@
                 }
                   error:^(NSError *error) {}
      ];
-    [OKSDK invokeMethod:@"users.getInfo" arguments:@{@"fields": @"pic640x480, name, birthday, age, gender, current_status, location, photo_id", @"uids":self.userID}
+    [OKSDK invokeMethod:@"users.getInfo" arguments:@{@"fields": @"pic640x480, name, birthday, age, gender, current_status, location, photo_id, user.FIRST_NAME", @"uids":self.userID}
                 success:^(NSDictionary* data) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                     User *user = [[User alloc] initUserWithArray:data];
@@ -91,6 +90,7 @@
                     weakSelf.userLogo.alpha = 1;
                         
                     weakSelf.userName.text = user.userName;
+                        weakSelf.title = user.userFirstName;
                     weakSelf.gender.text = user.gender;
                     weakSelf.birthday.text = user.birthday;
                     weakSelf.status.text = user.status;

@@ -19,6 +19,9 @@
     __block NSMutableArray *friendsID2;
     
      NSString *userID;
+    
+    FriendCell *cell;
+    
 }
 
 @end
@@ -27,6 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self friendsList];
     
@@ -99,8 +103,11 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    FriendCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"friendCell" forIndexPath:indexPath];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"friendCell" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.logo.layer.cornerRadius = cell.logo.frame.size.height / 2;
+    cell.logo.layer.masksToBounds = YES;
+    
     
     cell.name.text = [[dataSource objectAtIndex:indexPath.row] objectForKey:@"name"];
     [cell.logo setImageWithURL:[NSURL URLWithString:[[dataSource objectAtIndex:indexPath.row] objectForKey:@"pic1024x768"]] placeholderImage:[UIImage imageNamed:@"hidden"]];

@@ -15,6 +15,10 @@
 @end
 
 @implementation LoginController
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    self.title = @"Добро пожаловать";
+}
 
 #pragma mark - Action
 

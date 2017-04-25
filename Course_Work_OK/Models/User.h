@@ -11,7 +11,7 @@
 @interface User : NSObject
 
 
-@property (strong, nonatomic) NSString *userName, *birthday, *gender, *status, *location, *photoID, *photoDescription;
+@property (strong, nonatomic) NSString *userName, *userFirstName, *birthday, *gender, *status, *location, *photoID, *photoDescription;
 @property (strong, nonatomic) NSString *imageUrlString;
 @property (strong, nonatomic) NSNumber *photoLikeCount;
 

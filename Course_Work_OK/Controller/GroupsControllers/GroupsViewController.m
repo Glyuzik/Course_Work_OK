@@ -25,6 +25,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self groupList];
 }
@@ -42,7 +44,7 @@
                     }
                     NSString *groupID = [NSString stringWithFormat:@"%@", [array componentsJoinedByString:@","]];
                     ///////////
-                    [OKSDK invokeMethod:@"group.getInfo" arguments:@{@"uids":groupID,@"fields":@"name, photo_id, group. PIC_AVATAR, group.MEMBERS_COUNT"}
+                    [OKSDK invokeMethod:@"group.getInfo" arguments:@{@"uids":groupID,@"fields":@"name, photo_id, group.PIC_AVATAR, group.DESCRIPTION"}
                                 success:^(NSArray* data) {
                                     dispatch_async(dispatch_get_main_queue(), ^{
                                         dataSource = [NSMutableArray array];
@@ -84,6 +86,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     cell = [tableView dequeueReusableCellWithIdentifier:@"groupCell" forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.groupLogo.layer.cornerRadius = cell.groupLogo.frame.size.height/2;
+    cell.groupLogo.layer.masksToBounds = YES;
     
     
     [cell.groupLogo setImageWithURL:[NSURL URLWithString:[[dataSource objectAtIndex:indexPath.row] objectForKey:@"picAvatar"]]];
@@ -94,10 +98,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *membersCount = [NSString stringWithFormat:@"Подписчиков: %@",[[dataSource objectAtIndex:indexPath.row] objectForKey:@"members_count"]];
-        NSString *groupID = [NSString stringWithFormat:@"ID: %@",[[arrayID objectAtIndex:indexPath.row] objectForKey:@"groupId"]];
+        NSString *description = [NSString stringWithFormat:@"%@",[[dataSource objectAtIndex:indexPath.row] objectForKey:@"description"]];
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:membersCount message:groupID preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:description message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:alert animated:YES completion:nil];
 
